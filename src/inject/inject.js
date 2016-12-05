@@ -18,4 +18,9 @@
     document.body.appendChild(executorScript);
   };
   xhr.send();
+
+  chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    if(message.source !== 'cw-dev-tools-msg') return;
+    window.postMessage(message, 'https://www.codewars.com');
+  });
 })();

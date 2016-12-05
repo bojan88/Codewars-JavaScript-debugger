@@ -11,46 +11,62 @@
     var running;
 
     var validateBtn = document.querySelector('#validate_btn');
-    var browserExecBtn = document.createElement('a');
-    browserExecBtn.className = validateBtn.className;
-    browserExecBtn.id = 'run_in_browser';
-    browserExecBtn.innerHTML = 'Run in browser';
+    var browserExecBtn = document.querySelector('#run_in_browser');
+    if(!browserExecBtn) {
+      browserExecBtn = document.createElement('a');
+      browserExecBtn.className = validateBtn.className;
+      browserExecBtn.id = 'run_in_browser';
+      browserExecBtn.innerHTML = 'Run in browser';
 
-    browserExecBtn.addEventListener('click', function(e) {
-      if(running) {
-        worker.terminate();
-        browserExecBtn.innerHTML = 'Run in browser';
-        running = false;
-        return;
-      }
-      e.preventDefault();
-
-      worker = new Worker(URL.createObjectURL(blob));
-      worker.onmessage = function(e) {
-        if(e.data.action === 'close') {
+      browserExecBtn.addEventListener('click', function(e) {
+        if(running) {
+          worker.terminate();
           browserExecBtn.innerHTML = 'Run in browser';
           running = false;
+          return;
         }
-      };
-      worker.postMessage({code: App.controller.getCode() + ';\n\n\n' + App.controller.getFixture()});
-      browserExecBtn.innerHTML = 'Stop';
-      running = true;
-    });
+        e.preventDefault();
+
+        worker = new Worker(URL.createObjectURL(blob));
+        worker.onmessage = function(e) {
+          if(e.data.action === 'close') {
+            browserExecBtn.innerHTML = 'Run in browser';
+            running = false;
+          }
+        };
+        worker.postMessage({code: App.controller.getCode() + ';\n\n\n' + App.controller.getFixture()});
+        browserExecBtn.innerHTML = 'Stop';
+        running = true;
+      });
+    } else {
+      browserExecBtn.style.display = null;
+    }
 
     validateBtn.parentNode.insertBefore(browserExecBtn, validateBtn);
-    validateBtn.remove();
+    validateBtn.style.display = 'none';
     browserExecBtn.style.width = Math.ceil(browserExecBtn.getBoundingClientRect().width) + 'px';
   }
 
-  function isInited() {
-    return !!document.querySelector('#run_in_browser');
+  function clean() {
+    var validateBtn = document.querySelector('#validate_btn');
+    var browserExecBtn = document.querySelector('#run_in_browser');
+    validateBtn.style.display = null;
+    browserExecBtn.style.display = 'none';
   }
 
-  window.addEventListener("load", function() {
-    setInterval(function() {
-      if(!isInited()) {
-        init();
-      }
-    }, 300);
+  window.addEventListener('message', function(event) {
+    if (event.source !== window) {
+      return;
+    }
+
+    var message = event.data;
+    if(typeof message !== 'object' || message === null || message.source !== 'cw-dev-tools-msg') return;
+
+    if(message.action === 'init') {
+      init();
+    } else if(message.action === 'clean') {
+      clean();
+    }
   });
+
 })();
