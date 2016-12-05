@@ -1,0 +1,24 @@
+{
+  "name": "CodeWars browser runner (debugger)",
+  "version": "0.1.0",
+  "manifest_version": 2,
+  "description": "Run the code in browser where you can debug it instead of sending it to codewars server",
+  "permissions": [
+    "*://*.codewars.com/kata/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.codewars.com/kata/*"
+      ],
+      "js": [
+        "src/inject/inject.js"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    "src/inject/scripts/test.js",
+    "src/inject/scripts/worker.js",
+    "src/inject/scripts/executor.js"
+  ]
+}
