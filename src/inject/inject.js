@@ -21,6 +21,6 @@
 
   chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     if(message.source !== 'cw-dev-tools-msg') return;
-    window.postMessage(message, 'https://www.codewars.com');
+    window.postMessage(message, window.location.origin);
   });
 })();
