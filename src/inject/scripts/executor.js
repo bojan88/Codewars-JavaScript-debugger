@@ -2,10 +2,6 @@
   'use strict';
 
   function init() {
-    if(!window.location.pathname.startsWith('/kata') || !window.location.pathname.endsWith('/javascript')) {
-      return;
-    }
-
     var blob = new Blob([window.workerSrc], {type: 'application/javascript'});
     var worker;
     var running;
@@ -50,8 +46,10 @@
   function clean() {
     var validateBtn = document.querySelector('#validate_btn');
     var browserExecBtn = document.querySelector('#run_in_browser');
-    validateBtn.style.display = null;
-    browserExecBtn.style.display = 'none';
+    if(validateBtn && browserExecBtn) {
+      validateBtn.style.display = null;
+      browserExecBtn.style.display = 'none';
+    }
   }
 
   window.addEventListener('message', function(event) {
@@ -61,6 +59,10 @@
 
     var message = event.data;
     if(typeof message !== 'object' || message === null || message.source !== 'cw-dev-tools-msg') return;
+
+    if(!window.location.pathname.startsWith('/kata') || !window.location.pathname.endsWith('/javascript')) {
+      return;
+    }
 
     if(message.action === 'init') {
       init();
