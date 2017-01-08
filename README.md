@@ -12,3 +12,7 @@ By running your code in a web worker, the extension cannot block your UI. Your c
 ## How to use
 
 Just go to a Codewars Kata (e.g. [this one](https://www.codewars.com/kata/52aebd2423b44356b8000578/train/javascript)), start solving it, and insert `debugger;` line anywhere in solution or tests. Press F12 to open Chrome Developer Tools, and the "run examples" button will change to "run in browser". By pressing it, your code will run in a new web worker, and break on the line with debugger keyword.
+
+## How to install
+
+Clone or download zip and unpack, go to Settings -> More Tools -> Extensions, enable Developer mode, and click on Load unpacked extension...
