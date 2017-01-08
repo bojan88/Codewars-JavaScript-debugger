@@ -9,7 +9,7 @@
     if(xhr.DONE !== xhr.readyState) return;
 
     var workerScript = document.createElement('script');
-    workerScript.innerHTML += 'window.workerSrc = `var extId = "' + chrome.runtime.id + '";\n' + xhr.response + '`';
+    workerScript.innerHTML = 'window.workerSrc = `var extId = "' + chrome.runtime.id + '";\n' + xhr.response + '`';
 
     var executorScript = document.createElement('script');
     executorScript.src = chrome.runtime.getURL('/src/inject/scripts/executor.js');
