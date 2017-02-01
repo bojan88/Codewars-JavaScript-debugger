@@ -58,7 +58,9 @@
     }
 
     var message = event.data;
-    if(typeof message !== 'object' || message === null || message.source !== 'cw-dev-tools-msg') return;
+    if(typeof message !== 'object' || message === null || message.source !== 'cw-dev-tools-msg') {
+      return;
+    }
 
     if(!window.location.pathname.startsWith('/kata') || !window.location.pathname.endsWith('/javascript')) {
       return;
