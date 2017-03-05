@@ -21,5 +21,8 @@
     "src/inject/scripts/test.js",
     "src/inject/scripts/worker.js",
     "src/inject/scripts/executor.js"
+  ],
+  "permissions": [
+    "tabs"
   ]
 }
