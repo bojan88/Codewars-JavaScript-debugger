@@ -1,7 +1,9 @@
 var tabId;
 
 chrome.runtime.onConnect.addListener(function (port) {
-  if (port.name === "devtools-page" && port.sender.tab.title.match(/Developer Tools.*https?:\/\/(www.)?codewars.com\/kata\/.+\/javascript/)) {
+  if (port.name === "devtools-page" &&
+      port.sender.tab &&
+      port.sender.tab.title.match(/Developer Tools.*https?:\/\/(www.)?codewars.com\/kata\/.+\/javascript/)) {
 
     var messageHanler = function(message, sender) {
       if (message.action === "init") {
